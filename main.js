@@ -6,6 +6,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use('/', express.static(process.cwd() + '/public'));
 
+app.get('/engine_url.txt', (req, res) => {
+    res.sendFile(process.cwd() + '/engine_url.txt');
+});
+
 app.get('/img/chesspieces/:piece', (req, res) => {
     res.sendFile(process.cwd() + `/img/chesspieces/${req.params.piece}`);
 });

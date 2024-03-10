@@ -1,4 +1,4 @@
-const ENGINE_URL = 'http://localhost:8080/api/move';
+let ENGINE_URL = null;
 
 let playerSide = 'White';
 
@@ -92,17 +92,25 @@ function getEngineMove(callback) {
 }
 
 function doEngineMove() {
-    getEngineMove(move => {
-        console.log(move);
+    let _makeEngineMove = (move) => {
         let _moveString = move.move;
 
-        // TODO: parse engine promotion choice
         game.move({ from: _moveString.charAt(0) + _moveString.charAt(1),
             to: _moveString.charAt(2) + _moveString.charAt(3),
             promotion: _moveString.length == 5 ? _moveString.charAt(4) : ''
         })
         board.position(game.fen());
-    });
+    }
+
+    if (!ENGINE_URL) {
+        fetch('../engine_url.txt').then(_file => _file.text())
+        .then(_text => {
+            ENGINE_URL = _text;
+            getEngineMove(_makeEngineMove);
+        })
+    }
+
+    else getEngineMove(_makeEngineMove);
 }
 //#endregion
 
