@@ -86,7 +86,7 @@ function updateStatusText() {
 
 //#region Engine
 function getEngineMove(callback) {
-    fetch( `${ENGINE_URL}?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
+    fetch( `${ENGINE_URL}/api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
     .then(response => response.json()).then(response => callback(response))
     .catch(error => console.error(error));
 }
