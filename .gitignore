@@ -1,4 +1,5 @@
 /.env
 node_modules/
 /engine_url.txt
-functions
+# Local Netlify folder
+.netlify
