@@ -103,7 +103,7 @@ function doEngineMove() {
     }
 
     if (!ENGINE_URL) {
-        fetch('../engine_url.txt').then(_file => _file.text())
+        fetch('engine_url.txt').then(_file => _file.text())
         .then(_text => {
             ENGINE_URL = _text;
             getEngineMove(_makeEngineMove);
