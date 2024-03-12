@@ -22,11 +22,13 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
     updateStatusText();
 }
 
+// disallows dragging when game is over OR piece
+// is not player's side OR it is not player's turn to move
 function onDragStart(source, piece, position, orientation) {
     if (game.in_checkmate() || game.in_draw())
         return false;
 
-    return piece.charAt(0) === playerSide.charAt(0).toLowerCase();
+    return piece.charAt(0) === playerSide.charAt(0).toLowerCase() && getSideToMove() === playerSide;
 }
 
 function onSnapEnd() {
@@ -59,6 +61,7 @@ let $resetButton = $('#reset');
 $resetButton.on('click', () => {
     game = Chess();
     board.position(game.fen());
+    $statusText.html('White to move');
 });
 //#endregion
 
@@ -91,7 +94,7 @@ function getEngineMove(callback) {
     .catch(error => console.error(error));
 }
 
-function doEngineMove() {
+function doEngineMove(callback) {
     let _makeEngineMove = (move) => {
         let _moveString = move.move;
 
@@ -100,6 +103,7 @@ function doEngineMove() {
             promotion: _moveString.length == 5 ? _moveString.charAt(4) : ''
         })
         board.position(game.fen());
+        callback();
     }
 
     if (!ENGINE_URL) {
