@@ -17,9 +17,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
     // with themselves
     // playerSide = getSideToMove();
 
-    doEngineMove();
-
-    updateStatusText();
+    doEngineMove().then(() => updateStatusText());
 }
 
 // disallows dragging when game is over OR piece
@@ -88,33 +86,51 @@ function updateStatusText() {
 //#endregion
 
 //#region Engine
-function getEngineMove(callback) {
-    fetch( `${ENGINE_URL}/api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
-    .then(response => response.json()).then(response => callback(response))
-    .catch(error => console.error(error));
+function getEngineMove() {
+    return new Promise((resolve, reject) => {
+        fetch( `${ENGINE_URL}/api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
+        .then(response => response.json()).then(moveJson => resolve(moveJson))
+        .catch(error => reject(error));
+    });
 }
 
-function doEngineMove(callback) {
+function doEngineMove() {
     let _makeEngineMove = (move) => {
-        let _moveString = move.move;
+        return new Promise((resolve, reject) => {
+            try {
+                let _moveString = move.move;
+                game.move({ from: _moveString.charAt(0) + _moveString.charAt(1),
+                    to: _moveString.charAt(2) + _moveString.charAt(3),
+                    promotion: _moveString.length == 5 ? _moveString.charAt(4) : ''
+                });
+                board.position(game.fen());
+    
+                resolve();
+            }
 
-        game.move({ from: _moveString.charAt(0) + _moveString.charAt(1),
-            to: _moveString.charAt(2) + _moveString.charAt(3),
-            promotion: _moveString.length == 5 ? _moveString.charAt(4) : ''
-        })
-        board.position(game.fen());
-        callback();
+            catch {
+                reject();
+            }
+        });
     }
 
     if (!ENGINE_URL) {
         fetch('../engine_url.txt').then(_file => _file.text())
         .then(_text => {
             ENGINE_URL = _text;
-            getEngineMove(_makeEngineMove);
+            return new Promise((resolve, reject) => {
+                getEngineMove().then(moveJson => _makeEngineMove(moveJson))
+                .then(() => {console.log('calling resolve'); resolve()}).catch(() => reject());
+            });
         })
     }
 
-    else getEngineMove(_makeEngineMove);
+    else {
+        return new Promise((resolve, reject) => {
+            getEngineMove().then(moveJson => _makeEngineMove(moveJson))
+            .then(() => resolve()).catch(() => reject());
+        });
+    }
 }
 //#endregion
 
