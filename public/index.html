@@ -28,14 +28,55 @@
                 </p>
             </button>
 
-            <div id="plies">
-                <label id="pliesDisplay">Plies: 3</label>
-                <input id="pliesSlider" type="range" min="1" max="3" value="3">
+            <button id="settingsButton">
+                <p>
+                    Settings
+                </p>
+            </button>
+        </div>
+
+        <div id="settings" style="display: none;">
+            <div id="settingsMenu">
+                <div id="settingsMenuTopBar">
+                    <h2>
+                        Settings
+                    </h2>
+
+                    <button id="settingsMenuCloseButton">
+                        <p>
+                            X
+                        </p>
+                    </button>
+                </div>
+    
+                <h3 class="settingsHeader">
+                    Engine
+                </h3>
+
+                <div id="plies" class="settingsItem">
+                    <input id="pliesSlider" type="range" min="1" max="3" value="3">
+                    <label id="pliesDisplay">Plies: 3</label>
+                </div>
+
+                <h3 class="settingsHeader">
+                    Position
+                </h3>
+
+                <div id="initialFen" class="settingsItem">
+                    <label>Starting Fen:</label>
+                    <input type="text" id="initialFenInput">
+                    <button id="loadFenButton">
+                        <p>
+                            Load FEN
+                        </p>
+                    </button>
+                </div>
             </div>
         </div>
 
         <div id="main">
             <div id="board" style="width: 425px"></div>
+            <div id="ghostBoard" style="width: 425px; display: none;"></div>
             <div id="gameInfo">
                 <h2 id="gameStatus">White to move</h2>
             </div>
