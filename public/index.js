@@ -2,7 +2,11 @@ let ENGINE_URL = null;
 
 let playerSide = 'White';
 
+let $board = $('#board');
+let $ghostBoard = $('#ghostBoard');
+
 let board = null;
+let ghostBoard = null;
 let game = new Chess();
 
 //#region Board Listeners
@@ -43,26 +47,22 @@ let config = {
 }
 board = Chessboard('board', config);
 
+let ghostBoardConfig = {
+    position: config.position, pieceTheme: config.pieceTheme
+}
+ghostBoard = new Chessboard('ghostBoard', ghostBoardConfig);
+
 //#region Player Side Button
 let $playerSideButton = $('#playerSide');
 
-$playerSideButton.on('click', () => {
-    if (playerSide === 'White')
-        playerSide = 'Black';
+// $playerSideButton.on('click', () => {
+//     if (playerSide === 'White')
+//         playerSide = 'Black';
 
-    else playerSide = 'White';
+//     else playerSide = 'White';
 
-    $playerSideButton.html(`<p>Side: ${playerSide}</p>`);
-});
-//#endregion
-
-//#region Reset Button
-let $resetButton = $('#reset');
-$resetButton.on('click', () => {
-    game = Chess();
-    board.position(game.fen());
-    $statusText.html('White to move');
-});
+//     $playerSideButton.html(`<p>Side: ${playerSide}</p>`);
+// });
 //#endregion
 
 //#region Plies
@@ -71,6 +71,30 @@ let $pliesDisplay = $('#pliesDisplay');
 
 $pliesSlider.on('input', () => {
     $pliesDisplay.html(`Plies: ${$pliesSlider.val()}`)
+});
+//#endregion
+
+//#region Reset Button
+let $resetButton = $('#reset');
+$resetButton.on('click', () => {
+    game = Chess();
+    board.position(game.fen());
+
+    $statusText.html(`${getSideToMove()} to move`);
+});
+//#endregion
+
+//#region Settings Menu
+let $settings = $('#settings');
+$settings.css('display', 'none');
+
+let $settingsButton = $('#settingsButton');
+$settingsButton.on('click', () => {
+    $settings.css('display', 'block');
+    $board.css('display', 'none');
+
+    ghostBoard.position(game.fen());
+    $ghostBoard.css('display', 'block');
 });
 //#endregion
 
