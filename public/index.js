@@ -17,7 +17,13 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
     // with themselves
     // playerSide = getSideToMove();
 
-    doEngineMove().then(() => updateStatusText());
+    try {
+        doEngineMove().then(() => updateStatusText());
+    }
+
+    catch (error) {
+        console.error(error);
+    }
 }
 
 // disallows dragging when game is over OR piece
