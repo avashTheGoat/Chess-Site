@@ -85,6 +85,7 @@ $settingsCloseButton.on('click', () => {
 });
 //#endregion
 
+//#region Engine Settings
 //#region Plies
 let $pliesSlider = $('#pliesSlider');
 let $pliesDisplay = $('#pliesDisplay');
@@ -92,6 +93,9 @@ let $pliesDisplay = $('#pliesDisplay');
 $pliesSlider.on('input', () => {
     $pliesDisplay.html(`Plies: ${$pliesSlider.val()}`)
 });
+//#endregion
+
+let $quiescenceCheckbox = $('#useQuiescenceInput');
 //#endregion
 
 //#region Initial FEN
@@ -122,7 +126,8 @@ function updateStatusText() {
 
 //#region Engine
 function getEngineMove(callback) {
-    fetch( `${ENGINE_URL}api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
+    fetch( `${ENGINE_URL}api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`
+    + `&shouldUseQuiescence=${$quiescenceCheckbox.is(':checked')}`)
     .then(response => response.json()).then(response => callback(response))
     .catch(error => console.error(error));
 }
