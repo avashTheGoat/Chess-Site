@@ -3,10 +3,8 @@ let ENGINE_URL = null;
 let playerSide = 'White';
 
 let $board = $('#board');
-let $ghostBoard = $('#ghostBoard');
 
 let board = null;
-let ghostBoard = null;
 let game = new Chess();
 
 //#region Board Listeners
@@ -35,7 +33,7 @@ function onDragStart(source, piece, position, orientation) {
     return piece.charAt(0) === playerSide.charAt(0).toLowerCase() && getSideToMove() === playerSide;
 }
 
-function onSnapEnd() {
+function updateBoardPos() {
     board.position(game.fen());
 }
 //#endregion
@@ -43,14 +41,9 @@ function onSnapEnd() {
 let config = {
     position: 'start', pieceTheme: '/img/chesspieces/{piece}.png',
     draggable: true, onDragStart: onDragStart, onDrop: onDrop,
-    onSnapEnd: onSnapEnd
+    onSnapEnd: updateBoardPos
 }
 board = Chessboard('board', config);
-
-let ghostBoardConfig = {
-    position: config.position, pieceTheme: config.pieceTheme
-}
-ghostBoard = new Chessboard('ghostBoard', ghostBoardConfig);
 
 //#region Player Side Button
 let $playerSideButton = $('#playerSide');
@@ -65,15 +58,6 @@ let $playerSideButton = $('#playerSide');
 // });
 //#endregion
 
-//#region Plies
-let $pliesSlider = $('#pliesSlider');
-let $pliesDisplay = $('#pliesDisplay');
-
-$pliesSlider.on('input', () => {
-    $pliesDisplay.html(`Plies: ${$pliesSlider.val()}`)
-});
-//#endregion
-
 //#region Reset Button
 let $resetButton = $('#reset');
 $resetButton.on('click', () => {
@@ -85,17 +69,42 @@ $resetButton.on('click', () => {
 //#endregion
 
 //#region Settings Menu
+//#region Opening & Closing
 let $settings = $('#settings');
 $settings.css('display', 'none');
 
-let $settingsButton = $('#settingsButton');
-$settingsButton.on('click', () => {
+let $settingsOpenButton = $('#settingsButton');
+$settingsOpenButton.on('click', () => {
     $settings.css('display', 'block');
-    $board.css('display', 'none');
-
-    ghostBoard.position(game.fen());
-    $ghostBoard.css('display', 'block');
 });
+
+let $settingsCloseButton = $('#settingsClose');
+$settingsCloseButton.on('click', () => {
+    $settings.css('display', 'none');
+    $board.css('display', 'block');
+});
+//#endregion
+
+//#region Plies
+let $pliesSlider = $('#pliesSlider');
+let $pliesDisplay = $('#pliesDisplay');
+
+$pliesSlider.on('input', () => {
+    $pliesDisplay.html(`Plies: ${$pliesSlider.val()}`)
+});
+//#endregion
+
+//#region Initial FEN
+let $initialFenInput = $('#initialFenInput');
+let $loadFenButton = $('#loadFenButton');
+$loadFenButton.on('click', () => {
+    console.log(`Initial fen: ${$initialFenInput.val()}`);
+
+    game = new Chess($initialFenInput.val());
+    board.position(game.fen());
+    ghostBoard.position(game.fen());
+});
+//#endregion
 //#endregion
 
 //#region Status Text
@@ -113,7 +122,7 @@ function updateStatusText() {
 
 //#region Engine
 function getEngineMove(callback) {
-    fetch( `${ENGINE_URL}/api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
+    fetch( `${ENGINE_URL}api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
     .then(response => response.json()).then(response => callback(response))
     .catch(error => console.error(error));
 }

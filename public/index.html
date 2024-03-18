@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            Document
+            Epic Chess Engine
         </title>
         <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
@@ -22,7 +22,7 @@
                 </p>
             </button>
 
-            <button id="reset">
+            <button id="reset" class="redBtn">
                 <p>
                     Reset
                 </p>
@@ -37,17 +37,15 @@
 
         <div id="settings" style="display: none;">
             <div id="settingsMenu">
-                <div id="settingsMenuTopBar">
-                    <h2>
-                        Settings
-                    </h2>
+                <h2 id="settingsMenuTitle">
+                    Settings
+                </h2>
 
-                    <button id="settingsMenuCloseButton">
-                        <p>
-                            X
-                        </p>
-                    </button>
-                </div>
+                <button id="settingsClose" class="redBtn">
+                    <p>
+                        X
+                    </p>
+                </button>
     
                 <h3 class="settingsHeader">
                     Engine
@@ -76,7 +74,6 @@
 
         <div id="main">
             <div id="board" style="width: 425px"></div>
-            <div id="ghostBoard" style="width: 425px; display: none;"></div>
             <div id="gameInfo">
                 <h2 id="gameStatus">White to move</h2>
             </div>
