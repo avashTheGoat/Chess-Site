@@ -34,9 +34,13 @@ button p {
     font-family: 'Roboto';
 }
 
-/*For settings menu semi-transparent background to work*/
-#ghostBoard {
-    z-index: -1;
+.redBtn {
+    background-color: hsl(0, 59%, 70%);
+    transition: background-color 0.25s;
+}
+
+.redBtn:hover {
+    background-color: hsl(0, 71%, 74%);
 }
 
 #engineTitle {
@@ -62,17 +66,13 @@ button p {
     margin-left: 10px;
 }
 
-#reset {
-    background-color: hsl(0, 59%, 70%);
-    transition: background-color 0.25s;
-}
-
 #settingsButton {
     margin-left: auto;
     margin-right: 10px;
 }
 
 #settings {
+    z-index: 999999;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -96,17 +96,16 @@ button p {
     overflow: auto;
 }
 
-#settingsMenuTopBar {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
+#settingsMenuTitle {
+    text-align: center;
 
-#settingsMenuTopBar h2 {
     margin-top: 12px;
     margin-bottom: 0px;
+}
 
-    width: fit-content;
+#settingsClose {
+    position: absolute;
+    transform: translate(850%, -100%);
 }
 
 .settingsHeader {
@@ -122,7 +121,7 @@ button p {
 }
 
 /*Targets all buttons in settings menu*/
-/*Centering is not scalable*/
+/*Centering is not scalable to new buttons*/
 .settingsItem button {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -135,19 +134,11 @@ button p {
     font-size: 1.15em;
 }
 
-#reset:hover {
-    background-color: hsl(0, 71%, 74%);
-}
-
 #main {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
-
-/* #board {
-    z-index: -1;
-} */
 
 #gameInfo {
     width: 400px;
