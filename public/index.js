@@ -2,6 +2,8 @@ let ENGINE_URL = null;
 
 let playerSide = 'White';
 
+let $board = $('#board');
+
 let board = null;
 let game = new Chess();
 
@@ -35,7 +37,7 @@ function onDragStart(source, piece, position, orientation) {
     return piece.charAt(0) === playerSide.charAt(0).toLowerCase() && getSideToMove() === playerSide;
 }
 
-function onSnapEnd() {
+function updateBoardPos() {
     board.position(game.fen());
 }
 //#endregion
@@ -43,21 +45,21 @@ function onSnapEnd() {
 let config = {
     position: 'start', pieceTheme: '/img/chesspieces/{piece}.png',
     draggable: true, onDragStart: onDragStart, onDrop: onDrop,
-    onSnapEnd: onSnapEnd
+    onSnapEnd: updateBoardPos
 }
 board = Chessboard('board', config);
 
 //#region Player Side Button
 let $playerSideButton = $('#playerSide');
 
-$playerSideButton.on('click', () => {
-    if (playerSide === 'White')
-        playerSide = 'Black';
+// $playerSideButton.on('click', () => {
+//     if (playerSide === 'White')
+//         playerSide = 'Black';
 
-    else playerSide = 'White';
+//     else playerSide = 'White';
 
-    $playerSideButton.html(`<p>Side: ${playerSide}</p>`);
-});
+//     $playerSideButton.html(`<p>Side: ${playerSide}</p>`);
+// });
 //#endregion
 
 //#region Reset Button
@@ -65,10 +67,29 @@ let $resetButton = $('#reset');
 $resetButton.on('click', () => {
     game = Chess();
     board.position(game.fen());
-    $statusText.html('White to move');
+
+    $statusText.html(`${getSideToMove()} to move`);
 });
 //#endregion
 
+//#region Settings Menu
+//#region Opening & Closing
+let $settings = $('#settings');
+$settings.css('display', 'none');
+
+let $settingsOpenButton = $('#settingsButton');
+$settingsOpenButton.on('click', () => {
+    $settings.css('display', 'block');
+});
+
+let $settingsCloseButton = $('#settingsClose');
+$settingsCloseButton.on('click', () => {
+    $settings.css('display', 'none');
+    $board.css('display', 'block');
+});
+//#endregion
+
+//#region Engine Settings
 //#region Plies
 let $pliesSlider = $('#pliesSlider');
 let $pliesDisplay = $('#pliesDisplay');
@@ -76,6 +97,22 @@ let $pliesDisplay = $('#pliesDisplay');
 $pliesSlider.on('input', () => {
     $pliesDisplay.html(`Plies: ${$pliesSlider.val()}`)
 });
+//#endregion
+
+let $quiescenceCheckbox = $('#useQuiescenceInput');
+//#endregion
+
+//#region Initial FEN
+let $initialFenInput = $('#initialFenInput');
+let $loadFenButton = $('#loadFenButton');
+$loadFenButton.on('click', () => {
+    console.log(`Initial fen: ${$initialFenInput.val()}`);
+
+    game = new Chess($initialFenInput.val());
+    board.position(game.fen());
+    ghostBoard.position(game.fen());
+});
+//#endregion
 //#endregion
 
 //#region Status Text
@@ -94,7 +131,8 @@ function updateStatusText() {
 //#region Engine
 function getEngineMove() {
     return new Promise((resolve, reject) => {
-        fetch( `${ENGINE_URL}/api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`)
+        fetch( `${ENGINE_URL}api/move?fen=${game.fen()}&numPlies=${$pliesSlider.val()}`
+        + `&shouldUseQuiescence=${$quiescenceCheckbox.is(':checked')}`)
         .then(response => response.json()).then(moveJson => resolve(moveJson))
         .catch(error => reject(error));
     });
