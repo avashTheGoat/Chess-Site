@@ -4,7 +4,6 @@ let playerSide = 'White';
 
 let board = null;
 let game = new Chess();
-let moves = 0;
 
 //#region Board Listeners
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
@@ -13,8 +12,6 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
         return 'snapback';
 
     updateStatusText();
-
-    moves++;
 
     // uncomment for player to be able to play
     // with themselves
