@@ -4,6 +4,7 @@ let playerSide = 'White';
 
 let board = null;
 let game = new Chess();
+let moves = 0;
 
 //#region Board Listeners
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
@@ -13,12 +14,14 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 
     updateStatusText();
 
+    moves++;
+
     // uncomment for player to be able to play
     // with themselves
     // playerSide = getSideToMove();
 
     try {
-        doEngineMove().then(() => updateStatusText());
+        doEngineMove().then(() => updateStatusText()).catch(error => console.error(error));
     }
 
     catch (error) {
@@ -109,33 +112,27 @@ function doEngineMove() {
                     to: _moveString.charAt(2) + _moveString.charAt(3),
                     promotion: _moveString.length == 5 ? _moveString.charAt(4) : ''
                 });
+
                 board.position(game.fen());
-    
                 resolve();
             }
 
-            catch {
-                reject();
+            catch(error) {
+                reject(error);
             }
         });
     }
 
-    if (!ENGINE_URL) {
+    if (ENGINE_URL === null) {
         fetch('../engine_url.txt').then(_file => _file.text())
         .then(_text => {
             ENGINE_URL = _text;
-            return new Promise((resolve, reject) => {
-                getEngineMove().then(moveJson => _makeEngineMove(moveJson))
-                .then(() => {console.log('calling resolve'); resolve()}).catch(() => reject());
-            });
+            return getEngineMove().then(moveJson => _makeEngineMove(moveJson));
         })
     }
 
     else {
-        return new Promise((resolve, reject) => {
-            getEngineMove().then(moveJson => _makeEngineMove(moveJson))
-            .then(() => resolve()).catch(() => reject());
-        });
+        return getEngineMove().then(moveJson => _makeEngineMove(moveJson));
     }
 }
 //#endregion
