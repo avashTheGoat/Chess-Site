@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.ttf');
+  font-style: normal;
+}
+
+* {
+  font-family: 'Roboto';
+}
+
+body {
+  margin: 8px 0;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+
+  height: fit-content;
+  width: fit-content;
+
+  background-color: hsl(38, 11%, 81%);
+  transition: background-color 0.25s;
+}
+
+button:hover {
+  background-color: hsl(36, 23%, 84%);
+  cursor: pointer;
+}
+
+button p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  font-size: 1.35em;
+  font-family: 'Roboto';
+}

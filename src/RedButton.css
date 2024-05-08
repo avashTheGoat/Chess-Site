@@ -1,0 +1,8 @@
+.redBtn {
+    background-color: hsl(0, 59%, 70%);
+    transition: background-color 0.25s;
+}
+
+.redBtn:hover {
+    background-color: hsl(0, 71%, 74%);
+}

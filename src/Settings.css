@@ -1,0 +1,62 @@
+#settings {
+    z-index: 999999;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+    left: 0;
+    top: 0;
+
+    background-color: rgba(0, 0, 0, 0.226);
+}
+
+#settingsMenu {
+    left: 50%;
+    transform: translate(-50%, 25%);
+    z-index: 99 !important;
+
+    width: 330px;
+    height: 400px;
+
+    background-color: hsl(38, 70%, 87%);
+    position: fixed;
+    overflow: auto;
+}
+
+#settingsMenuTitle {
+    text-align: center;
+
+    margin-top: 12px;
+    margin-bottom: 0px;
+}
+
+#settingsClose {
+    position: absolute;
+    transform: translate(850%, -100%);
+}
+
+.settingsHeader {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.settingsItem {
+    margin-left: 20px;
+}
+
+/*Targets all buttons in settings menu*/
+/*Centering is not scalable to new buttons*/
+.settingsItem button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    position: relative;
+    transform: translate(120%, 0%);
+}
+
+.settingsItem button p {
+    font-size: 1.15em;
+}
