@@ -1,4 +1,4 @@
-import './RedButton.css'
+import './RedButton.css';
 
 function RedButton({ btnText, onClick }) {
     function tryCallOnClick() {

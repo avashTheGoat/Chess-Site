@@ -1,5 +1,6 @@
-import { forwardRef, useImperativeHandle, useState } from 'react'
-import './Settings.css'
+import { forwardRef, useImperativeHandle, useState } from 'react';
+
+import './Settings.css';
 
 const Settings = forwardRef(({ onLoadFen }, ref) => {
     const [isDisplayed, setIsDisplayed] = useState(false);

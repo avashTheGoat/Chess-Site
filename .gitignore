@@ -1,4 +1,2 @@
-/.env
 node_modules/
-/engine_url.txt
-/.netlify
+dist/

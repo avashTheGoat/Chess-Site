@@ -71,7 +71,7 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
 
     useEffect(() => {
         let config = {
-            position: 'start', pieceTheme: './src/img/chesspieces/{piece}.png',
+            position: 'start', pieceTheme: './src/assets/chesspieces/{piece}.png',
             draggable: true, onDragStart: onDragStart, onDrop: onDrop,
             onSnapEnd: onSnapEnd
         };
