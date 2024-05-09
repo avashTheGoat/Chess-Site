@@ -11,6 +11,9 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
                 game.current = new Chess();
                 board.position(game.current.fen());
                 setBoard({...board});
+
+                if (_getSideToMove() != playerSide.current)
+                    _makeOpponentMove();
             },
     
             setPosition(fen) {
@@ -50,9 +53,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
                 
                 board.orientation('flip');
                 setBoard({...board});
-
-                if (_getSideToMove() != playerSide.current)
-                    _makeOpponentMove();
             },
 
             isRepetition() {
@@ -89,7 +89,7 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
         getOpponentMove().then(move => {
             const from = move.substring(0, 2);
             const to = move.substring(2, 4);
-            const promotion = move.length === 5 ? move.charAt(5) : '';
+            const promotion = move.length === 5 ? move.charAt(4) : '';
             game.current.move({from: from, to: to, promotion: promotion});
 
             board.position(game.current.fen());

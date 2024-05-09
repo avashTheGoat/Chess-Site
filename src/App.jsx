@@ -28,8 +28,8 @@ export default function App() {
         <Title/>
         <OptionsBar onResetClick={() => tryCallNoReturnFunc(boardRef.current.resetGame)}
          onSideClick={() => {
-            tryCallNoReturnFunc(boardRef.current.resetGame);
             tryCallNoReturnFunc(boardRef.current.swapPlayerSide);
+            tryCallNoReturnFunc(boardRef.current.resetGame);
          }}
          onSettingsClick={() => tryCallNoReturnFunc(settingsRef.current.toggleDisplay)}
          />
@@ -46,7 +46,25 @@ export default function App() {
             const qParams = {};
             qParams.numPlies = `${settingsRef.current.getNumPlies()}`;
             qParams.useQuiescence = `${settingsRef.current.getQuiescence()}`;
-            qParams.pgn = `${boardRef.current.getPgn()}`;
+            
+            let pgn = boardRef.current.getPgn();
+            const fenIndex = pgn.indexOf('FEN'); // happens if position is set from initial FEN
+            if (fenIndex >= 0) {
+              let _parsedFen = '';
+              for (let i = fenIndex + 5; i < pgn.length; i++) {
+                if (pgn.charAt(i) === '"')
+                  break;
+
+                _parsedFen += pgn.charAt(i);
+              }
+
+              qParams.fen = _parsedFen;
+
+              let _parsedPgn = pgn.substring(pgn.indexOf('1.'), pgn.length);
+              pgn = _parsedPgn;
+            }
+
+            qParams.pgn = `${pgn}`;
 
             let finalUrl = engineURL + '?';
             for (const [pName, pVal] of Object.entries(qParams)) {
