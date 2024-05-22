@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 
-const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListener, onStateChange, getOpponentMove }, ref) => {
+const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListener, onStateChange }, ref) => {
     let [board, setBoard] = useState(); // not const to set board to new Chessboard() later
     const game = useRef(new Chess());
     const playerSide = useRef(initialPlayerSide);
@@ -11,13 +11,16 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
                 game.current = new Chess();
                 board.position(game.current.fen());
                 setBoard({...board});
-
-                if (_getSideToMove() != playerSide.current)
-                    _makeOpponentMove();
             },
     
             setPosition(fen) {
                 game.current.load(fen, { skipValidation: true });
+                board.position(game.current.fen());
+                setBoard({...board});
+            },
+
+            makeMove(moveObj) {
+                game.current.move(moveObj);
                 board.position(game.current.fen());
                 setBoard({...board});
             },
@@ -85,18 +88,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
             onStateChange()
     });
 
-    function _makeOpponentMove() {
-        getOpponentMove().then(move => {
-            const from = move.substring(0, 2);
-            const to = move.substring(2, 4);
-            const promotion = move.length === 5 ? move.charAt(4) : '';
-            game.current.move({from: from, to: to, promotion: promotion});
-
-            board.position(game.current.fen());
-            setBoard({...board});
-        }).catch(e => console.error(e));
-    }
-
     function _getSideToMove() {
         return game.current.turn() === 'b' ? 'Black' : 'White';
     }
@@ -124,8 +115,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
     function onSnapEnd() {
         board.position(game.current.fen())
         setBoard({...board})
-
-        _makeOpponentMove();
     }
     //#endregion
 

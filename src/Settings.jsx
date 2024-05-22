@@ -21,6 +21,10 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
 
             getQuiescence() {
                 return shouldUseQuiescence;
+            },
+
+            getFen() {
+                return fen;
             }
         }
     });
