@@ -94,7 +94,8 @@ export default function App() {
             
             if (boardRef.current)
             {
-              if (boardRef.current.getSideToMove() != boardRef.current.getPlayerSide())
+              if (!boardRef.current.isGameOver() &&
+                  boardRef.current.getSideToMove() != boardRef.current.getPlayerSide())
               {
                 fetchEngineMove().then(move => {
                   const from = move.substring(0, 2);
@@ -112,6 +113,7 @@ export default function App() {
               return;
             return boardRef.current.getGameStatus();
           }}
+          getPgn={() => { return getParsedPosition()[1]; }}
           getSideToMove={() => {
             if (!boardRef.current)
               return;

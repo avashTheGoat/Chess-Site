@@ -1,6 +1,6 @@
 import RedButton from './RedButton.jsx';
 
-import './Options.css';
+import './OptionsBar.css';
 
 export default function OptionsBar({ onSideClick, onResetClick, onSettingsClick }) {
     function tryCallFunc(func) {

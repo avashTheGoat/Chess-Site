@@ -25,6 +25,13 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
                 setBoard({...board});
             },
 
+            swapPlayerSide() {
+                playerSide.current = playerSide.current === 'White' ? 'Black' : 'White';
+                
+                board.orientation('flip');
+                setBoard({...board});
+            },
+
             getGameStatus() {
                 if (game.current.in_checkmate())
                     return 'Checkmate';
@@ -51,13 +58,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
                 return playerSide.current;
             },
 
-            swapPlayerSide() {
-                playerSide.current = playerSide.current === 'White' ? 'Black' : 'White';
-                
-                board.orientation('flip');
-                setBoard({...board});
-            },
-
             isRepetition() {
                 return game.current.in_threefold_repetition();
             },
@@ -68,6 +68,10 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
 
             isInsufficientMat() {
                 return game.current.insufficient_material();
+            },
+
+            isGameOver() {
+                return game.current.in_checkmate() || game.current.in_draw();
             }
         }
     });

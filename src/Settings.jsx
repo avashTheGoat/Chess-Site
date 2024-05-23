@@ -72,8 +72,8 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
                                 <small><small>&#40;anti-blunder&#41;</small></small>
                                 :
                             </label>
-                            <input type="checkbox" id="useQuiescenceInput" value={shouldUseQuiescence}
-                            onChange={(e) => setQuiescence(e.target.value)} defaultChecked/>
+                            <input type="checkbox" id="useQuiescenceInput"
+                             onChange={(e) => setQuiescence(!shouldUseQuiescence)} defaultChecked/>
                         </div>
                     </div>
 
