@@ -2,7 +2,7 @@ import RedButton from './RedButton.jsx';
 
 import './OptionsBar.css';
 
-export default function OptionsBar({ onSideClick, onResetClick, onSettingsClick }) {
+export default function OptionsBar({ curSide, onSideClick, onResetClick, onSettingsClick }) {
     function tryCallFunc(func) {
         if (!func)
             return;
@@ -12,11 +12,10 @@ export default function OptionsBar({ onSideClick, onResetClick, onSettingsClick 
 
     return (
         <>
-        
             <div id='optionsBar'>
                 <button style={{marginLeft: '30px'}} onClick={() => tryCallFunc(onSideClick)}>
                     <p>
-                        Side: White
+                        Side: {curSide}
                     </p>
                 </button>
 

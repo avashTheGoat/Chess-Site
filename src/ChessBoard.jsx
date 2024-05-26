@@ -1,12 +1,19 @@
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 
-const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListener, onStateChange }, ref) => {
+const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onStateChange }, ref) => {
     let [board, setBoard] = useState(); // not const to set board to new Chessboard() later
     const game = useRef(new Chess());
-    const playerSide = useRef(initialPlayerSide);
+
+    const playerSideRef = useRef();
+    playerSideRef.current = playerSide;
 
     useImperativeHandle(ref, () => {
         return {
+            flip() {
+                board.orientation('flip');
+                setBoard({...board});
+            },
+
             resetGame() {
                 game.current = new Chess();
                 board.position(game.current.fen());
@@ -22,13 +29,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
             makeMove(moveObj) {
                 game.current.move(moveObj);
                 board.position(game.current.fen());
-                setBoard({...board});
-            },
-
-            swapPlayerSide() {
-                playerSide.current = playerSide.current === 'White' ? 'Black' : 'White';
-                
-                board.orientation('flip');
                 setBoard({...board});
             },
 
@@ -52,10 +52,6 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
 
             getFen() {
                 return game.current.fen();
-            },
-
-            getPlayerSide() {
-                return playerSide.current;
             },
 
             isRepetition() {
@@ -103,7 +99,7 @@ const ChessBoard = forwardRef(({ boardPixelSize, initialPlayerSide, onDropListen
         if (game.current.in_checkmate() || game.current.in_draw())
             return false;
 
-        const _side = playerSide.current;
+        const _side = playerSideRef.current;
         return piece.charAt(0) === _side.charAt(0).toLowerCase() && _getSideToMove() === _side;
     }
 

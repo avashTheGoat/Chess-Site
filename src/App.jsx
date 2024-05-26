@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import Title from './Title.jsx';
 import OptionsBar from './OptionsBar.jsx';
@@ -11,6 +11,8 @@ import engineURL from './EngineURL.js';
 import './App.css';
 
 export default function App() {
+  const [playerSide, setPlayerSide] = useState('White');
+  
   const boardRef = useRef();
   const gameStatusRef = useRef();
   const settingsRef = useRef();
@@ -74,20 +76,28 @@ export default function App() {
     });
   }
 
+  function swapPlayerSide() {
+    if (!boardRef.current.flip)
+      return;
+
+    setPlayerSide((_side) => _side === 'White' ? 'Black' : 'White');
+    boardRef.current.flip();
+  }
+
   return (
     <>
       <div id='top' style={{display: 'flex', flexDirection: 'column', gap: 10}}>
         <Title/>
-        <OptionsBar onResetClick={() => tryCallNoReturnFunc(boardRef.current.resetGame)}
-         onSideClick={() => {
-            tryCallNoReturnFunc(boardRef.current.swapPlayerSide);
+        <OptionsBar curSide={playerSide} onResetClick={() => tryCallNoReturnFunc(boardRef.current.resetGame)}
+          onSideClick={() => {
+            swapPlayerSide();
             tryCallNoReturnFunc(boardRef.current.resetGame);
-         }}
-         onSettingsClick={() => tryCallNoReturnFunc(settingsRef.current.toggleDisplay)}/>
+          }}
+          onSettingsClick={() => tryCallNoReturnFunc(settingsRef.current.toggleDisplay)}/>
       </div>
 
       <div id='main' style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-        <ChessBoard ref={boardRef} boardPixelSize={'425px'} initialPlayerSide={'White'}
+        <ChessBoard ref={boardRef} playerSide={playerSide} boardPixelSize={'425px'}
          onStateChange={() => {
             if (gameStatusRef.current)
               gameStatusRef.current.updateStatus();
@@ -95,7 +105,7 @@ export default function App() {
             if (boardRef.current)
             {
               if (!boardRef.current.isGameOver() &&
-                  boardRef.current.getSideToMove() != boardRef.current.getPlayerSide())
+                  boardRef.current.getSideToMove() != playerSide)
               {
                 fetchEngineMove().then(move => {
                   const from = move.substring(0, 2);

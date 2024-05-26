@@ -1,0 +1,24 @@
+.moveUI {
+    background-color: hsl(40, 50%, 83%);
+    border-radius: 5px;
+
+    display: flex;
+    gap: 10px;
+
+    width: 80%;
+    height: fit-content;
+    
+    margin: auto;
+    margin-top: 10px;
+}
+
+.moveUI p {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.moveUiContainer {
+    flex: 1 1 0px;
+    /* background-color: wheat; */
+    text-align: center;
+}

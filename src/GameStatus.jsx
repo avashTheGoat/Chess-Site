@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
+import MoveUI from './MoveUI.jsx'
 
 import './GameStatus.css'
 
@@ -62,15 +63,13 @@ const GameStatus = forwardRef(({ getGameStatus, getSideToMove, getPgn,
         if (i % 2 == 1)
             continue;
 
-        let _move = moves[i][0];
-        let _nextMove = i == (moves.length - 1) ? '' : moves[i + 1][0];
+        let _whiteMove = moves[i][0];
+        let _blackMove = i == (moves.length - 1) ? '' : moves[i + 1][0];
         let _moveNum = Math.ceil((moves[i][1] + 1) / 2);
 
         moveUI.push(
             <>
-                <div key={_move[1]} style={{display: 'flex', flexWrap: 'wrap'}}>
-                    <p style={{margin: '0'}}>{_moveNum}. {_move} {_nextMove}</p>
-                </div>
+                <MoveUI moveNum={_moveNum} whiteMove={_whiteMove} blackMove={_blackMove} key={_moveNum}/>
             </>
         );
     }
@@ -82,10 +81,8 @@ const GameStatus = forwardRef(({ getGameStatus, getSideToMove, getPgn,
                     {statusDisplay}
                 </h2>
 
-                <div id='moves' style={{display: 'flex', flexDirection: 'row', overflow: 'auto', justifyContent: 'space-around'}}>
-                    <ul style={{margin: '10 0', padding: '0'}}>
-                        {moveUI}
-                    </ul>
+                <div id='moves' style={{overflow: 'auto'}}>
+                    {moveUI}
                 </div>
             </div>
         </>
