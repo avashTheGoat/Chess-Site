@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 
-import Title from './Title.jsx';
 import OptionsBar from './OptionsBar.jsx';
 import ChessBoard from './ChessBoard.jsx';
 import GameStatus from './GameStatus.jsx';
@@ -87,7 +86,7 @@ export default function App() {
   return (
     <>
       <div id='top' style={{display: 'flex', flexDirection: 'column', gap: 10}}>
-        <Title/>
+        <h1>Epic Chess Engine</h1>
         <OptionsBar curSide={playerSide} onResetClick={() => tryCallNoReturnFunc(boardRef.current.resetGame)}
           onSideClick={() => {
             swapPlayerSide();

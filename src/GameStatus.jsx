@@ -81,7 +81,7 @@ const GameStatus = forwardRef(({ getGameStatus, getSideToMove, getPgn,
                     {statusDisplay}
                 </h2>
 
-                <div id='moves' style={{overflow: 'auto'}}>
+                <div id='moves'>
                     {moveUI}
                 </div>
             </div>

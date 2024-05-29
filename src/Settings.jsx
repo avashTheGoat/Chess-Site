@@ -35,9 +35,9 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
 
     return (
         <>
-            <div id="settings" style={{display: !isDisplayed ? 'none' : 'block'}}>
+            <div id="settings" style={{visibility: !isDisplayed ? 'hidden' : 'visible', opacity: !isDisplayed ? '0': '1'}}>
                 <div id="settingsMenu">
-                    <div id='top'>
+                    <section id='top'>
                         <h2 id="settingsMenuTitle">
                             Settings
                         </h2>
@@ -48,14 +48,14 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
                             </p>
                         </button>
             
-                    </div>
+                    </section>
 
-                    <div id='engineSettings'>
+                    <section id='engineSettings'>
                         <h3 className="settingsHeader">
                             Engine
                         </h3>
 
-                        <div id="plies" className="settingsItem">
+                        <section id="plies" className="settingsItem">
                             <input id="pliesSlider" type="range" min="1" max="4" value={numPlies}
                             onChange={(e) => setNumPlies(e.target.value)}/>
                             <label id="pliesDisplay">
@@ -64,9 +64,9 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
                             <label>
                                 <small><small>&#40;# of 1/2 moves seen&#41;</small></small>
                             </label>
-                        </div>
+                        </section>
 
-                        <div id="quiescence" className="settingsItem">
+                        <section id="quiescence" className="settingsItem">
                             <label>
                                 Quiescence
                                 <small><small>&#40;anti-blunder&#41;</small></small>
@@ -74,15 +74,15 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
                             </label>
                             <input type="checkbox" id="useQuiescenceInput"
                              onChange={(e) => setQuiescence(!shouldUseQuiescence)} defaultChecked/>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
 
-                    <div id='positionSettings'>
+                    <section id='positionSettings'>
                         <h3 className="settingsHeader">
                             Position
                         </h3>
 
-                        <div id="initialFen" className="settingsItem">
+                        <section id="initialFen" className="settingsItem">
                             <label>Starting FEN:</label>
                             <input type="text" id="initialFenInput" value={fen}
                              onChange={(e) => setFen(e.target.value)}/>
@@ -95,8 +95,8 @@ const Settings = forwardRef(({ onLoadFen }, ref) => {
                                     Load FEN
                                 </p>
                             </button>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                 </div>
             </div>
         </>)

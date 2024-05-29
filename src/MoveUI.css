@@ -9,7 +9,6 @@
     height: fit-content;
     
     margin: auto;
-    margin-top: 10px;
 }
 
 .moveUI p {
@@ -19,6 +18,5 @@
 
 .moveUiContainer {
     flex: 1 1 0px;
-    /* background-color: wheat; */
     text-align: center;
 }
