@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 
 const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onStateChange }, ref) => {
-    const [board, setBoard] = useState();
+    // need to not make board const because calling setBoard by itself
+    // in the useEffect that only runs initially doesn't work 
+    let [board, setBoard] = useState();
     const game = useRef(new Chess());
 
     const playerSideRef = useRef();
@@ -24,6 +26,16 @@ const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onS
                 game.current.load(fen, { skipValidation: true });
                 board.position(game.current.fen(), isInstant);
                 setBoard({...board});
+            },
+
+            setIsInteractable(isInteractable) {
+                const config = {
+                    position: 'start', pieceTheme: './chesspieces/{piece}.png',
+                    draggable: false, onDragStart: onDragStart, onDrop: onDrop,
+                    onSnapEnd: onSnapEnd
+                };
+
+                setBoard({...new Chessboard('board', config)});
             },
 
             makeMove(moveObj) {
@@ -79,7 +91,8 @@ const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onS
             onSnapEnd: onSnapEnd
         };
     
-        setBoard({...new Chessboard('board', config)});
+        board = new Chessboard('board', config);
+        setBoard({...board});
     }, []);
 
     useEffect(() => {

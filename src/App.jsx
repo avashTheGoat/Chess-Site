@@ -12,6 +12,7 @@ import './App.css';
 export default function App() {
   const [playerSide, setPlayerSide] = useState('White');
   
+  const gameHistory = useRef([]);
   const boardRef = useRef();
   const gameStatusRef = useRef();
   const settingsRef = useRef();
