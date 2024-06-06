@@ -63,13 +63,17 @@ const GameStatus = forwardRef(({ getGameStatus, getSideToMove, getPgn,
         if (i % 2 == 1)
             continue;
 
-        let _whiteMove = moves[i][0];
-        let _blackMove = i == (moves.length - 1) ? '' : moves[i + 1][0];
-        let _moveNum = Math.ceil((moves[i][1] + 1) / 2);
+        const _whiteMove = moves[i][0];
+        const _blackMove = i == (moves.length - 1) ? '' : moves[i + 1][0];
+        const _moveNum = Math.ceil((moves[i][1] + 1) / 2);
+
+        const _topMargin = i == 0 ? 10 : 0;
+        const _bottomMargin = (i == moves.length - 1 || i == moves.length - 2) ? 10 : 0;
 
         moveUI.push(
             <>
-                <MoveUI moveNum={_moveNum} whiteMove={_whiteMove} blackMove={_blackMove} key={_moveNum}/>
+                <MoveUI moveNum={_moveNum} whiteMove={_whiteMove} blackMove={_blackMove} key={_moveNum}
+                 topMargin={_topMargin} bottomMargin={_bottomMargin}/>
             </>
         );
     }

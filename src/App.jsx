@@ -146,7 +146,7 @@ export default function App() {
       </div>
 
       <Settings ref={settingsRef}
-       onLoadFen={(fen) => boardRef.current.setPosition(fen)}/>
+       onLoadFen={(fen) => boardRef.current.setPosition(fen, true)}/>
     </>
   )
 }

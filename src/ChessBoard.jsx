@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 
 const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onStateChange }, ref) => {
-    let [board, setBoard] = useState(); // not const to set board to new Chessboard() later
+    const [board, setBoard] = useState();
     const game = useRef(new Chess());
 
     const playerSideRef = useRef();
@@ -20,9 +20,9 @@ const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onS
                 setBoard({...board});
             },
     
-            setPosition(fen) {
+            setPosition(fen, isInstant) {
                 game.current.load(fen, { skipValidation: true });
-                board.position(game.current.fen());
+                board.position(game.current.fen(), isInstant);
                 setBoard({...board});
             },
 
@@ -73,14 +73,13 @@ const ChessBoard = forwardRef(({ playerSide, boardPixelSize, onDropListener, onS
     });
 
     useEffect(() => {
-        let config = {
+        const config = {
             position: 'start', pieceTheme: './chesspieces/{piece}.png',
             draggable: true, onDragStart: onDragStart, onDrop: onDrop,
             onSnapEnd: onSnapEnd
         };
     
-        board = new Chessboard('board', config);
-        setBoard({...board});
+        setBoard({...new Chessboard('board', config)});
     }, []);
 
     useEffect(() => {

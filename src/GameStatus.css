@@ -32,14 +32,6 @@
     background-color: hsl(40, 50%, 79%);
 }
 
-#moves > .moveUI:first {
-    color: red;
-}
-
-#moves > .moveUI:last {
-    color: blue;
-}
-
 #moves::-webkit-scrollbar {
     background-color: rgb(184, 184, 184);
     width: 13px;
